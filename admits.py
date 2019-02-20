@@ -3,6 +3,8 @@ import os
 from bs4 import BeautifulSoup
 import json
 import csv
+import re
+import base64
 
 ADMITS_PAGE = 'https://apps.admissions.yale.edu/portal/admits?cmd=faces'
 LOGIN_PAGE = 'https://apps.admissions.yale.edu/account/login'
@@ -33,11 +35,18 @@ while not finished:
         entry = session.get(USER_PATH + student_entry['data-href'])
         student_bs = BeautifulSoup(entry.text, 'lxml')
         student = {}
-        for row in student_bs.find_all('tr'):
+        # Iterate through rows, skipping photo
+        for row in student_bs.find_all('tr')[1:]:
             question = row.find('th')
             answer = row.find('td')
             if None not in (question, answer):
                 student[question.string.strip()] = answer.string
+        photo_element = student_entry.find('div', {'class': 'facebook_photo'})
+        photo = re.findall(r'url\(data:image/png;base64,(.*?)\)', photo_element['style'])
+        # If a base64-encoded photo is found (sometimes only the default one will be linked)
+        if len(photo) != 0:
+            with open('photos/' + student['Name'] + '.png', 'wb') as f:
+                f.write(base64.decodebytes(photo[0].encode()))
         students.append(student)
     if len(page_names) < 4 * 12:
         # Page isn't full, implying this is the last.
