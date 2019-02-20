@@ -2,6 +2,7 @@ import requests
 import os
 from bs4 import BeautifulSoup
 import json
+import csv
 
 ADMITS_PAGE = 'https://apps.admissions.yale.edu/portal/admits?cmd=faces'
 LOGIN_PAGE = 'https://apps.admissions.yale.edu/account/login'
@@ -19,6 +20,7 @@ session.post(LOGIN_PAGE, data=credentials)
 finished = False
 page_number = 0
 names = []
+students = []
 while not finished:
     page_number += 1
     page = session.get(ADMITS_PAGE + '&page=%d' % page_number)
@@ -36,11 +38,24 @@ while not finished:
             answer = row.find('td')
             if None not in (question, answer):
                 student[question.string.strip()] = answer.string
-        print(student)
+        students.append(student)
     if len(page_names) < 4 * 12:
         # Page isn't full, implying this is the last.
         finished = True
+    break
 
 print('{name_count} admit names fetched.'.format(name_count=len(names)))
-with open('resources/admit_names.json', 'w+') as f:
+with open('names.json', 'w+') as f:
     json.dump(names, f)
+
+keys = []
+for student in students:
+    for key in student.keys():
+        if key not in keys:
+            keys.append(key)
+
+with open('admits.csv', 'w+') as f:
+    writer = csv.writer(f)
+    writer.writerow(keys)
+    for student in students:
+        writer.writerow([student.get(key) for key in keys])
