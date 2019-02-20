@@ -35,7 +35,7 @@ while not finished:
             question = row.find('th')
             answer = row.find('td')
             if None not in (question, answer):
-                student[question.string] = answer.string
+                student[question.string.strip()] = answer.string
         print(student)
     if len(page_names) < 4 * 12:
         # Page isn't full, implying this is the last.
