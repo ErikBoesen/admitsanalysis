@@ -42,7 +42,6 @@ while not finished:
     if len(page_names) < 4 * 12:
         # Page isn't full, implying this is the last.
         finished = True
-    break
 
 print('{name_count} admit names fetched.'.format(name_count=len(names)))
 with open('names.json', 'w+') as f:
