@@ -18,7 +18,7 @@ credentials = {
 # Log in to portal using credentials, persisting authentication through session
 session.post(LOGIN_PAGE, data=credentials)
 
-# Iterate through paginated admits list, scraping names from each page
+# Iterate through paginated admits list, scraping data from each page and popup content
 finished = False
 page_number = 0
 names = []
@@ -53,7 +53,7 @@ while not finished:
         # Page isn't full, implying this is the last.
         finished = True
 
-print('{name_count} admit names fetched.'.format(name_count=len(names)))
+print('{name_count} admits processed.'.format(name_count=len(names)))
 with open('names.json', 'w+') as f:
     json.dump(names, f)
 
