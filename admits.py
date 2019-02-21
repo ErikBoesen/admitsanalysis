@@ -47,6 +47,7 @@ while not finished:
         if len(photo) != 0:
             with open('photos/' + student['Name'] + '.png', 'wb') as f:
                 f.write(base64.decodebytes(photo[0].encode()))
+        print('Processed student: {name}.'.format(name=student['Name']))
         students.append(student)
     if len(page_names) < 4 * 12:
         # Page isn't full, implying this is the last.
