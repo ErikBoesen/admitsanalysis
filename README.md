@@ -8,4 +8,4 @@ It will also output all admit profile photos into `photos/`.
 ## Authorship
 Developed and maintained by [Erik Boesen](https://erikboesen.com).
 ## Licensing
-[MIT](LICENSE)
+[GPL](LICENSE)
