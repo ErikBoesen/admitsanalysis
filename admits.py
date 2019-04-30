@@ -29,7 +29,7 @@ while not finished:
     bs = BeautifulSoup(page.text, 'lxml')
     page_names = [name_element.string for name_element in bs.find_all('div', {'class': 'facebook_name'})]
     names += page_names
-    print('Page {page_number} processed, with {admit_count} admits.'.format(page_number=page_number,
+    print('Page {page_number} processing, with {admit_count} admits.'.format(page_number=page_number,
                                                                             admit_count=len(page_names)))
     for student_entry in bs.find_all('div', {'class': 'facebook_entry'}):
         entry = session.get(USER_PATH + student_entry['data-href'])
