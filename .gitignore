@@ -1,5 +1,3 @@
 photos/*.png
 *.json
 *.csv
-!old.json
-!new.json
